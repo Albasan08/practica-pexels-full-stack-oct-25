@@ -8,11 +8,60 @@
 </head>
 <body>
     <header>
-        <h1></h1>
+        <div>
+            <a href="index.html">
+                <img src="#" alt="Logotipo pexels">
+            </a>
+        </div>
+        <div>
+            <button>Favoritos</button> <!-- Investigar como hacer un pop up-->
+        </div>
     </header>
     <main>
+        <header>
+            <h1>Las mejores fotos de stock gratis, imágenes libres de regalías y vídeos compartidos por creadores.</h1>
+        </header>
+        <section>
+            <article id="buscador">
+                <input type="text" name="buscador" placeholder="Escribe aquí por palabra clave">
+            </article>
+            <article id="categorias">
+                <button>Categoría 1</button>
+                <button>Categoría 2</button> 
+                <button>Categoría 3</button> 
+            </article>
+        </section>
+        <section id="imagenes-mostradas">
+            <h2>X</h2>
+            <select id="filtros" name="filtros">
+                <option value="todas">Todas</option>
+                <option value="horizontal">Horizontal</option>
+                <option value="vertical">Vertical</option>
+            </select>
+            <article>
+                <div>
+                  <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
+                  <p>Nombre de la foto</p>
+                  <p>Nombre del fotógrafo</p>
+                  <p>Breve descripción</p>  
+                </div>
+                <div>
+                  <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
+                  <p>Nombre de la foto</p>
+                  <p>Nombre del fotógrafo</p>
+                  <p>Breve descripción</p>  
+                </div>
+                <div>
+                  <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
+                  <p>Nombre de la foto</p>
+                  <p>Nombre del fotógrafo</p>
+                  <p>Breve descripción</p>  
+                </div>
+            </article>
+        </section>
     </main>
     <footer>
+        <p>Práctica front</p>
     </footer>
     <script src="js/main.js"></script>
 </body>
