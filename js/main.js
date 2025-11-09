@@ -20,6 +20,12 @@ const articleGaleriaIndex = document.querySelector('#imagenes-filtradas-mostrada
 //console.log(articleGaleriaIndex);
 
 /**
+ * Variable para poder acceder al elemento estático del HTML (section)
+ */
+const sectionGaleriaIndex = document.querySelector("#imagenes-mostradas");
+//console.log(sectionGaleriaIndex);
+
+/**
  * Fragmento usado en función pintarImagenesIndex para optimizar espacio
  */
 const fragment = document.createDocumentFragment();
@@ -66,7 +72,10 @@ const pintarImagenesIndex = (imagenesFiltradas) => {
     const descImgAPintar = document.createElement('P');
     //console.log(descImgAPintar);
 
-    // Asignar atributos a img y p
+    const tituloSectionAPintar = document.createElement("H2");
+    //console.log(tituloSectionAPintar);
+
+    // Asignar atributos a img, p y h2
     imgAPintar.setAttribute("src", fotos.src);
     //console.log(imgAPintar);
     imgAPintar.setAttribute("alt", fotos.alt);
@@ -78,6 +87,9 @@ const pintarImagenesIndex = (imagenesFiltradas) => {
     descImgAPintar.textContent = fotos.descripcion;
     //console.log(descImgAPintar);
 
+    tituloSectionAPintar.textContent = `Imágenes gratis de ${fotos.categoria} `
+    //console.log(tituloSectionAPintar);
+
     // Meter img y ps en el div
     divImgAPintar.append(imgAPintar, tituloImgAPintar, autorImgAPintar, descImgAPintar);
     //console.log(divImgAPintar);
@@ -85,6 +97,9 @@ const pintarImagenesIndex = (imagenesFiltradas) => {
     // Meter el div en el article
     articleGaleriaIndex.append(divImgAPintar); 
     //console.log(articleGaleriaIndex);
+
+    // Meter H2 en section
+    sectionGaleriaIndex.prepend(tituloSectionAPintar);
     
     //Fragmento
     fragment.append(divImgAPintar);
