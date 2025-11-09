@@ -1,4 +1,6 @@
 // VARIABLES
+
+//Pendiente cambiar
 const arrayTemporalEjemplo = [
     {
         id: 1,
@@ -26,31 +28,32 @@ const fragment = document.createDocumentFragment();
 
 
 // FUNCIONES
-
-const filtrarImagenesIndex =  async () => {
-    try {
-        const imagenesFiltradas = await arrayTemporalEjemplo.filter((img) => img.categoria === arrayTemporalEjemplo[0].categoria);
+/**
+ * Función que filtra las imágenes en función de un párametro
+ * @param {Array} arrayTemporalEjemplo fuente de información 
+ * @param {String} categoria elemento a comparar
+ * @returns pintarImagenesIndex() o MostrarError()
+ */
+const filtrarImagenesIndex = (arrayTemporalEjemplo, categoria) => {
+    //console.log("filtrar Imagenes en index");
+    const imagenesFiltradas = arrayTemporalEjemplo.filter((fotos) => fotos.categoria === categoria); // Filter siempre te devuelve un array
+    if(imagenesFiltradas.length > 0) { // Comparar si el array devuelto tiene contenido o no
         //console.log(imagenesFiltradas)
-        return imagenesFiltradas;
-    } catch (error) {
-        throw error
+        pintarImagenesIndex(imagenesFiltradas)
+    } else {
+        mostrarError();
     }  
 }
 
-filtrarImagenesIndex() 
-    .then ((respuesta) => {
-        pintarImagenesIndex();
-    })
-    .catch ((error) => {
-        mostrarError()
-    }) 
-
-const pintarImagenesIndex = (arrayTemporalEjemplo) => {
-    const imagenesFiltradas = filtrarImagenesIndex();
+/**
+ * Función que pinta en el DOM los divs de las imágenes ya filtradas
+ * @param {Array} imagenesFiltradas imágenes filtradas por el parámetro
+ * @returns DOM dinámico
+ */
+const pintarImagenesIndex = (imagenesFiltradas) => {
     //console.log("pintar Imagenes en index");
 
-    filtrarImagenesIndex(imagenesFiltradas);
-
+    imagenesFiltradas.forEach(fotos => { // Porque el método filter siempre te va a devolver un array
     // Crear los elementos
     const divImgAPintar = document.createElement('DIV');
     //console.log(divImgAPintar)
@@ -64,15 +67,15 @@ const pintarImagenesIndex = (arrayTemporalEjemplo) => {
     //console.log(descImgAPintar);
 
     // Asignar atributos a img y p
-    imgAPintar.setAttribute("src", arrayTemporalEjemplo[0].src);
+    imgAPintar.setAttribute("src", fotos.src);
     //console.log(imgAPintar);
-    imgAPintar.setAttribute("alt", arrayTemporalEjemplo[0].alt);
+    imgAPintar.setAttribute("alt", fotos.alt);
     //console.log(imgAPintar);
-    tituloImgAPintar.textContent = arrayTemporalEjemplo[0].titulo;
+    tituloImgAPintar.textContent = fotos.titulo;
     //console.log(tituloImgAPintar);
-    autorImgAPintar.textContent = arrayTemporalEjemplo[0].fotografo;
+    autorImgAPintar.textContent = fotos.fotografo;
     //console.log(autorImgAPintar)
-    descImgAPintar.textContent = arrayTemporalEjemplo[0].descripcion;
+    descImgAPintar.textContent = fotos.descripcion;
     //console.log(descImgAPintar);
 
     // Meter img y ps en el div
@@ -85,12 +88,15 @@ const pintarImagenesIndex = (arrayTemporalEjemplo) => {
     
     //Fragmento
     fragment.append(divImgAPintar);
-    articleGaleriaIndex.append(fragment);
+    });
 
-    return articleGaleriaIndex;
+    articleGaleriaIndex.append(fragment);
 }
 
-const mostrarError = () => { // Pendiente gestionar el error. Try / catch?
+/**
+ * Función que devuelve un error al no coincidir las imágenes con el filtro
+ */
+const mostrarError = () => {
     // Crear elemento
     const textoError = document.createElement('P');
     //console.log(textoError);
@@ -101,15 +107,10 @@ const mostrarError = () => { // Pendiente gestionar el error. Try / catch?
 
     articleGaleriaIndex.append(textoError); 
     //console.log(articleGaleriaIndex);
-
-    return articleGaleriaIndex;
 }
 
-
 // INVOCACIONES
-filtrarImagenesIndex(arrayTemporalEjemplo);
-pintarImagenesIndex(arrayTemporalEjemplo);
-mostrarError();
+filtrarImagenesIndex(arrayTemporalEjemplo, "Mesas");
 
 /* Pseudocódigo
 Evento()
@@ -140,6 +141,14 @@ Inicio
             Meter div en article
     Si no
         Mostrar error
+Fin
+
+MostrarError()
+Inicio
+    Mostrar error en pantalla (p)
+        Crear p
+        Asignar valor a p
+        Meter p en el article
 Fin
 
 Se necesita (variables): 
