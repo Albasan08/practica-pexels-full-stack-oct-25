@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------- DOM --------------------------------
     const botonFiltro = document.querySelector("#filtros");    
     const botonCards = document.querySelector("#categorias");
-    const articleGaleriaIndex = document.querySelector('#imagenes-filtradas-mostradas');
+    const articleGaleriaIndex = document.querySelector("#imagenes-filtradas-mostradas");
+    //console.log(articleGaleriaIndex)
     const sectionGaleriaIndex = document.querySelector("#imagenes-mostradas");
     const campoInput = document.querySelector("#campo-buscador");
     const formulario = document.querySelector("#formulario");
@@ -11,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ----------------- VARIABLES -------------------------
     const urlBase='https://api.pexels.com/v1'
-    
+    const apiKey = "5ih5q7iDnDqQWYj19e4LGs6e4GjQMKBxIt3EojUp2ZU4c9ZlmM5i27SH";
+
     const arrayBotones = [{
             id:34665728,
             categoria:"Naturaleza"
@@ -51,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     formulario.addEventListener('submit', (ev) => {
         //console.log(ev);
         ev.preventDefault();
@@ -66,27 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // campoInput.addEventListener('keyup', (ev) => {
-    //     //console.log(ev);
-    //     ev.preventDefault();
-
-    //     if (ev.keyCode == 13) { // El keyCode de Enter es 13
-    //         const input = campoInput.value.trim();
-    //         //console.log(input);
-    //         validarPalabraInput(input);
-            
-    //         campoInput.value = ""; 
-    //     } 
-    // });
-
-
     // --------------- FUNCIONES --------------------------
-    
+    const init=()=>{
+        arrayBotones.forEach((foto)=>{
+            pintarBotones(foto)
+        })
+    }
+
     const conectarConApi = async (url) => {
         try {
             const respuesta = await fetch(`${urlBase}/${url}`, {
                 headers: {
-                    Authorization: "5ih5q7iDnDqQWYj19e4LGs6e4GjQMKBxIt3EojUp2ZU4c9ZlmM5i27SH"
+                    Authorization:`${apiKey}`
                 }
             });
             //console.log(respuesta)
@@ -118,23 +110,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
     
 
-    const pinarTodas = async (categoria)=>{
+    const gestionarData = async (categoria)=>{
         //console.log('pintando todas')
+        //console.log(categoria)
         const data = await conectarConApi(`search?query=${categoria}&per_page=10&page=3`)
-        //console.log(data)
+        //console.log(data.photos, "AQUIIIIIIII")
+        pintarImagenesIndex(data.photos);
+        
     };
-    //pinarTodas('arte')
-
-    // const pintarDesdeCategoria=as()=>{
-    //     const data=await conectarConApi()
-    // }
-    // const pintarDesdeFiltro=()=>{
-    //     const data=await conectarConApi()
-    // }
-    // const pintarDesdePaginacion=()=>{
-    //     const data=await conectarConApi()
-    // }
-
 
     const pintarBotones = async({id,categoria}) => {
         try {
@@ -207,73 +190,72 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("ENTRARÍA A ERROR")
             valido = false; // Para que no se ejecute
         } else if (validarExpresion === true) {
-            //filtrarImagenesIndex();
-            console.log("ENTRARÍA A FILTRAR IMÁGENES")
+            gestionarData(input)
+            //console.log("ENTRARÍA A FILTRAR IMÁGENES")
         }
+
+        
     };
 
-    /*const filtrarImagenesIndex = (arrayTemporalEjemplo, categoria) => {
-    //console.log("filtrar Imagenes en index");
-        const imagenesFiltradas = arrayTemporalEjemplo.filter((fotos) => fotos.categoria === categoria); // Filter siempre te devuelve un array
-        if(imagenesFiltradas.length > 0) { // Comparar si el array devuelto tiene contenido o no
-            //console.log(imagenesFiltradas)
-            pintarImagenesIndex(imagenesFiltradas)
-        } else {
-            mostrarError();
-        }  
-    }*/
+    // const filtrarImagenesIndex = (arrayTemporalEjemplo, categoria) => {
+    // //console.log("filtrar Imagenes en index");
+    //     const imagenesFiltradas = arrayTemporalEjemplo.filter((fotos) => fotos.categoria === categoria); // Filter siempre te devuelve un array
+    //     if(imagenesFiltradas.length > 0) { // Comparar si el array devuelto tiene contenido o no
+    //         //console.log(imagenesFiltradas)
+    //         pintarImagenesIndex(imagenesFiltradas)
+    //     } else {
+    //         mostrarError();
+    //     }  
+    // }
 
-    /*const pintarImagenesIndex = (imagenesFiltradas) => {
-        //console.log("pintar Imagenes en index");
+    const pintarImagenesIndex = (imagenesFiltradas) => {
+        console.log(imagenesFiltradas, "pintar Imagenes en index");
 
-        imagenesFiltradas.forEach(fotos => { // Porque el método filter siempre te va a devolver un array
+        articleGaleriaIndex.innerHTML = "";
+        try {
+            const tituloSectionAPintar = document.createElement("H2");
+            //console.log(tituloSectionAPintar);
+            tituloSectionAPintar.textContent = `Imágenes gratis relacionadas `
+            //console.log(tituloSectionAPintar);
+            // Meter H2 en section
+            articleGaleriaIndex.prepend(tituloSectionAPintar);
+
+            imagenesFiltradas.forEach(fotos => { // Porque el método filter siempre te va a devolver un array
             // Crear los elementos
             const divImgAPintar = document.createElement('DIV');
             //console.log(divImgAPintar)
             const imgAPintar = document.createElement('IMG');
             //console.log(imgAPintar);
-            const tituloImgAPintar = document.createElement('P');
-            //console.log(tituloImgAPintar);
             const autorImgAPintar = document.createElement('P');
             //console.log(autorImgAPintar);
-            const descImgAPintar = document.createElement('P');
-            //console.log(descImgAPintar);
-
-            const tituloSectionAPintar = document.createElement("H2");
-            //console.log(tituloSectionAPintar);
 
             // Asignar atributos a img, p y h2
-            imgAPintar.setAttribute("src", fotos.src);
+            imgAPintar.setAttribute("src", fotos["src"]["medium"]);
             //console.log(imgAPintar);
             imgAPintar.setAttribute("alt", fotos.alt);
             //console.log(imgAPintar);
-            tituloImgAPintar.textContent = fotos.titulo;
-            //console.log(tituloImgAPintar);
-            autorImgAPintar.textContent = fotos.fotografo;
+            autorImgAPintar.textContent = fotos.photographer;
             //console.log(autorImgAPintar)
-            descImgAPintar.textContent = fotos.descripcion;
-            //console.log(descImgAPintar);
-
-            tituloSectionAPintar.textContent = `Imágenes gratis de ${fotos.categoria} `
-            //console.log(tituloSectionAPintar);
 
             // Meter img y ps en el div
-            divImgAPintar.append(imgAPintar, tituloImgAPintar, autorImgAPintar, descImgAPintar);
+            divImgAPintar.append(imgAPintar, autorImgAPintar);
             //console.log(divImgAPintar);
 
             // Meter el div en el article
             articleGaleriaIndex.append(divImgAPintar); 
             //console.log(articleGaleriaIndex);
-
-            // Meter H2 en section
-            sectionGaleriaIndex.prepend(tituloSectionAPintar);
             
             //Fragmento
             fragment.append(divImgAPintar);
         });
 
         articleGaleriaIndex.append(fragment);
-    };*/
+
+        } catch (error) {
+            console.log(error, "GESTIONA EL ERROR DESDE PINTARIMAGENESINDEX")
+        }
+
+    }
 
     /*const mostrarError = () => {
         // Crear elemento
@@ -289,15 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };*/
 
     //-------------- INVOCACIONES ----------------------
-
-    const init=()=>{
-        arrayBotones.forEach((foto)=>{
-            pintarBotones(foto)
-
-        })
-
-
-    }
 
     init()
 
