@@ -9,8 +9,8 @@
 <body>
     <header>
         <div>
-            <a class="logo" href="https://www.pexels.com">
-                <img src="https://images.pexels.com/lib/api/pexels.png" />
+            <a href="https://www.pexels.com">
+                <img class="logo" src="https://images.pexels.com/lib/api/pexels.png" />
             </a>
         </div>
         <div>
@@ -18,21 +18,25 @@
         </div>
     </header>
     <main>
-        <header>
+        <header class="mb50">
             <h1>Las mejores fotos de stock gratis, imágenes libres de regalías y vídeos compartidos por creadores.</h1>
         </header>
-        <section>
-            <article id="buscador">
-                <input type="text" id="campo-buscador" name="buscador" placeholder="Escribe aquí por palabra clave">
+        <section class="mb50">
+            <article id="buscador" class="mb20 flexContainer">
+                <form action="#" id="formulario" class="formulario">
+                    <input class="mb10" type="text" id="campo-buscador" name="buscador" placeholder="Buscar fotos gratuitas">
+                    <input type="submit" value="Enviar" id="enviarInput">
+                </form>
+
             </article>
-            <article id="categorias">
+            <article id="categorias" class="flexContainer">
                 <!-- <button>Categoría 1</button>
                 <button>Categoría 2</button> 
                 <button>Categoría 3</button>  -->
             </article>
         </section>
-        <section id="imagenes-mostradas">
-            <h2>X</h2>
+        <section id="imagenes-mostradas ">
+            <h2>SEGUNDO TITULO</h2>
             <div id="filtros">
             <!-- <select>
                 <option value="todas">Todas</option>
@@ -40,20 +44,20 @@
                 <option value="vertical">Vertical</option>
             </select> -->
             </div>
-            <article id="imagenes-filtradas-mostradas">
-                <div>
+            <article id="imagenes-filtradas-mostradas flexContainer">
+                <div class="col-4">
                   <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
                   <p>Nombre de la foto</p>
                   <p>Nombre del fotógrafo</p>
                   <p>Breve descripción</p>  
                 </div>
-                <div>
+                <div class="col-4">
                   <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
                   <p>Nombre de la foto</p>
                   <p>Nombre del fotógrafo</p>
                   <p>Breve descripción</p>  
                 </div>
-                <div>
+                <div class="col-4">
                   <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
                   <p>Nombre de la foto</p>
                   <p>Nombre del fotógrafo</p>
