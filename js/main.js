@@ -39,8 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const tagbtn = ev.target.id; // obtiene el id del botón (categoría)
             //console.log(tagbtn);
-            pintarImagenesIndex(tagbtn);
-
+            gestionarData(tagbtn)
         }
        
     });
