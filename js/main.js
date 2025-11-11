@@ -44,12 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
        
     });
 
-    document.addEventListener("change", (ev) => {
-        if (ev.target.matches("#filtros select")) {
-            const tagbtn = ev.target; // obtiene el elemento select
-            //console.log(tagbtn);
+    botonFiltro.addEventListener("change", (ev) => {
+        if (ev.target.matches("#filtros")) {
+            const tagbtn = ev.target.value; // obtiene el elemento select
+            console.log(tagbtn);
             pintarImagenesIndex(tagbtn); // pinta las imágenes según el filtro seleccionado
         }
+
     });
 
     formulario.addEventListener('submit', (ev) => {
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --------------- FUNCIONES --------------------------
-    const init=()=>{
+    const init = () => {
         arrayBotones.forEach((foto)=>{
             pintarBotones(foto)
         })
@@ -94,8 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    //console.log(conectarConApi())
-
 //34665728
 //photos/34665728
     // const gestionCategorias = async (id) => {
@@ -108,13 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
     //     }
     // }
     
-
     const gestionarData = async (categoria)=>{
         //console.log('pintando todas')
         //console.log(categoria)
-        const data = await conectarConApi(`search?query=${categoria}&per_page=10&page=3`)
+        const data = await conectarConApi(`search?query=${categoria}&orientation=${botonFiltro.value}&per_page=10&page=3`)
         //console.log(data.photos, "AQUIIIIIIII")
         pintarImagenesIndex(data.photos);
+        //pintarFiltro();
         
     };
 
@@ -151,18 +150,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const pintarFiltro = () => {
-        const miSelect = document.createElement("select");
+    // const pintarFiltro = async (categoria) => {
 
-        arrayFiltros.forEach(element => {
-            const miFiltro = document.createElement("option");
-            miFiltro.value = element;
-            miFiltro.textContent = element;
-            miSelect.append(miFiltro);
-        });
+    //     botonFiltro.innerHTML = ""
+    //     try {
+    //         const data = await conectarConApi(`search?query=${categoria}&per_page=10&orientation=${select.value}&page=3`)
+    //         //console.log(data)
+    //         const miSelect = document.createElement("SELECT");
+    //         //console.log(miSelect)
+    //         const miFiltro = document.createElement("OPTION");
+    //         console.log(miFiltro)
+    //         miFiltro.setAttribute("value", data["src"]["landscape"])
+    //        // miFiltro.value = data.src.landscape;
+    //         console.log(miFiltro)
+    //         miFiltro.textContent = "Landscape";
+    //         //console.log(miFiltro)
+    //         miSelect.append(miFiltro);
 
-        botonFiltro.append(miSelect);
-    };
+    //         botonFiltro.append(miSelect);
+
+    //     } catch (error) {
+    //         console.log(error, "ERROR DESDE PINTAR FILTRO")
+            
+    //     }
+    // };
 
     const validarPalabraInput = (input) => {
         //console.log("Validar Palabra Input");
@@ -190,9 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
             valido = false; // Para que no se ejecute
         } else if (validarExpresion === true) {
             gestionarData(input)
+            //pintarFiltro()
+            
             //console.log("ENTRARÍA A FILTRAR IMÁGENES")
         }
-
+        
         
     };
 
@@ -275,22 +288,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
 });//DOMContentLoaded
-  
-
-
-    // //Pendiente cambiar
-    // const arrayTemporalEjemplo = [
-    //     {
-    //         id: 1,
-    //         src: "https://images.pexels.com/photos/347139/pexels-photo-347139.jpeg",
-    //         alt: "Imagen de una mesa a modo de ejemplo",
-    //         titulo: "Imagen mesa 1",
-    //         fotografo: "Fotógrafo X",
-    //         descripcion: "Esta es una breve descripción de ejemplo para probar que el p funciona, espero que se vea :)",
-    //         categoria: "Mesas",
-    //     }
-    // ]
-
-
 
 
