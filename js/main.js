@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fragment = document.createDocumentFragment();
     
     // ----------------- VARIABLES -------------------------
-    const urlBase='https://api.pexels.com/v1'
+    const urlBase ='https://api.pexels.com/v1'
     const apiKey = "5ih5q7iDnDqQWYj19e4LGs6e4GjQMKBxIt3EojUp2ZU4c9ZlmM5i27SH";
+    let categoriaActual;
 
     const arrayBotones = [{
             id:34665728,
@@ -34,24 +35,31 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (ev.target.matches("#categorias button")) {
 
-            const tagbtn = ev.target.id; 
-            gestionarData(tagbtn)
+            categoriaActual = ev.target.id; 
+            gestionarData(categoriaActual);
+            // const tagbtn = ev.target.id; 
+            // gestionarData(tagbtn);
         }
     });
 
     botonFiltro.addEventListener("change", (ev) => {
+        
         if (ev.target.matches("#filtros")) {
+            
             const tagbtn = ev.target.value; 
             console.log(tagbtn);
-            pintarImagenesIndex(tagbtn); 
+            gestionarData(categoriaActual,tagbtn);
         }
     });
 
     formulario.addEventListener('submit', (ev) => {
         ev.preventDefault();
 
-        const input = campoInput.value;
-        validarPalabraInput(input);
+        categoriaActual = campoInput.value;
+        validarPalabraInput(categoriaActual);
+
+        // const input = campoInput.value;
+        // validarPalabraInput(input);
     });
 
 
@@ -81,8 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const gestionarData = async (categoria) => {
-        const data = await conectarConApi(`search?query=${categoria}&orientation=${botonFiltro.value}&per_page=10&page=3`)
+    const gestionarData = async (categoria, orientacion) => {
+        const data = await conectarConApi(`search?query=${categoria}&orientation=${orientacion}&per_page=10&page=3`)
+        console.log(data)
         pintarImagenesIndex(data.photos);
     };
 
@@ -140,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const pintarImagenesIndex = (imagenesFiltradas) => {
-        console.log(imagenesFiltradas, "pintar Imagenes en index");
+        //console.log(imagenesFiltradas, "pintar Imagenes en index");
 
         articleError.innerHTML = "";
         articleGaleriaIndex.innerHTML = "";
@@ -154,27 +163,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             imagenesFiltradas.forEach(fotos => { 
 
-            const divImgAPintar = document.createElement('DIV');
-            divImgAPintar.classList.add('col-12', 'col-md-6','col-lg-4', 'p10', 'card');
+                const divImgAPintar = document.createElement('DIV');
+                divImgAPintar.classList.add('col-12', 'col-md-6','col-lg-4', 'p10', 'card');
 
-            const imgAPintar = document.createElement('IMG');
+                const imgAPintar = document.createElement('IMG');
 
-            const autorImgAPintar = document.createElement('P');
+                const autorImgAPintar = document.createElement('P');
 
-            imgAPintar.setAttribute("src", fotos["src"]["medium"]);
+                imgAPintar.setAttribute("src", fotos["src"]["medium"]);
 
-            imgAPintar.setAttribute("alt", fotos.alt);
+                imgAPintar.setAttribute("alt", fotos.alt);
 
-            autorImgAPintar.textContent = fotos.photographer;
+                autorImgAPintar.textContent = fotos.photographer;
 
-            divH2.append(tituloSectionAPintar);
+                divH2.append(tituloSectionAPintar);
 
-            divImgAPintar.append(imgAPintar, autorImgAPintar);
+                divImgAPintar.append(imgAPintar, autorImgAPintar);
 
-            articleGaleriaIndex.append(divH2,divImgAPintar); 
-            
-            fragment.append(divImgAPintar);
-        });
+                articleGaleriaIndex.append(divH2,divImgAPintar); 
+                
+                fragment.append(divImgAPintar);
+            });
 
         articleGaleriaIndex.append(fragment);
 
