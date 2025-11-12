@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectionGaleriaIndex = document.querySelector("#imagenes-mostradas");
     const campoInput = document.querySelector("#campo-buscador");
     const formulario = document.querySelector("#formulario");
+    const articleError = document.querySelector("#error");
     const fragment = document.createDocumentFragment();
     
     // ----------------- VARIABLES -------------------------
@@ -76,11 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw "Oh, oh, error"
             }
         } catch (error) {
-            throw (error + "Pendiente de gestionar error")
+            throw (error)
         }
     };
 
-    const gestionarData = async (categoria)=>{
+    const gestionarData = async (categoria) => {
         const data = await conectarConApi(`search?query=${categoria}&orientation=${botonFiltro.value}&per_page=10&page=3`)
         pintarImagenesIndex(data.photos);
     };
@@ -107,13 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
             botonCards.append(miarticle);
             
         } catch (error) {
-            console.log(error)
+            mostrarError();
         }
     };
 
     const validarPalabraInput = (input) => {
 
-        console.log(input, "DESDE VALIDAR PALABRA INPUT");
+        articleError.innerHTML = "";
 
         /* Permite:
             Letras mayúsculas y minúsculas con acentos y ñ
@@ -128,11 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let regExp = new RegExp(/^[A-Za-zÁÉÍÓÚáéíóúÑñäÄëËïÏöÖüÜ\s]{3,50}$/,"gi")
         let validarExpresion = regExp.test(input); // devuelve true o false
 
-        // Chivato
         let valido = true;
 
         if (input === "" || validarExpresion === false) {
-            console.log("ENTRARÍA A ERROR")
+            mostrarError();
             valido = false; 
         } else if (validarExpresion === true) {
             gestionarData(input)
@@ -142,7 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const pintarImagenesIndex = (imagenesFiltradas) => {
         console.log(imagenesFiltradas, "pintar Imagenes en index");
 
+        articleError.innerHTML = "";
         articleGaleriaIndex.innerHTML = "";
+
         try {
             const divH2 = document.createElement('DIV')
             divH2.classList.add('col-12','mb50');
@@ -177,16 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
         articleGaleriaIndex.append(fragment);
 
         } catch (error) {
-            console.log(error, "GESTIONA EL ERROR DESDE PINTARIMAGENESINDEX")
+            mostrarError();
         }
-
     };
 
     const mostrarError = () => {
-        const textoError = document.createElement('P');
 
-        textoError.textContent = "Tu búsqueda no se corresponde con ninguna imágen. Prueba otra vez";
-        articleGaleriaIndex.append(textoError); 
+        articleError.innerHTML = "";
+
+        const textoError = document.createElement('P');
+        const divError = document.createElement("DIV");
+        divError.classList.add('error','mb50');
+        textoError.textContent = "Tu criterio de búsqueda no se corresponde con ninguna imagen. Prueba otra vez.";
+
+        divError.append(textoError);
+        articleError.append(divError);
     };
 
     //-------------- INVOCACIONES ----------------------
