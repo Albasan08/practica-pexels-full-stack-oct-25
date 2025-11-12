@@ -155,6 +155,11 @@ footer p{
     transform: scale(1.05);
 }
 
+.card button:hover{
+    background-color: rgb(49, 49, 49);
+    transform: scale(1.05);
+}
+
 
 .card1{
     border: 1px solid #ccc;
