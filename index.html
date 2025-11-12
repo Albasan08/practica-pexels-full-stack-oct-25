@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <header>
-        <div>
+    <header class="flexContainer">
+        <div class="col-6 col-lg-6 alvert">
             <a href="https://www.pexels.com">
                 <img class="logo" src="https://images.pexels.com/lib/api/pexels.png" />
             </a>
         </div>
-        <div>
+        <div class="col-6  col-lg-6 fav alvert">
             <button>Favoritos</button> <!-- Investigar como hacer un pop up-->
         </div>
     </header>
@@ -21,11 +21,18 @@
         <header class="mb50">
             <h1>Las mejores fotos de stock gratis, imágenes libres de regalías y vídeos compartidos por creadores.</h1>
         </header>
-        <section class="mb50">
-            <article id="buscador" class="mb20 flexContainer">
-                <form action="#" id="formulario" class="formulario">
+        
+        <section class="mb100">
+            <article id="buscador" class="mb20">
+                <form action="#" id="formulario" class="formulario flexContainer">
+                    <div class="col-9 p10">
                     <input class="mb10" type="text" id="campo-buscador" name="buscador" placeholder="Buscar fotos gratuitas">
-                    <input type="submit" value="Enviar" id="enviarInput">
+                    </div>
+                    <div class="col-3 p10">
+                        <input type="submit" value="Enviar" id="enviarInput">
+                    </div>
+
+
                 </form>
 
             </article>
@@ -36,25 +43,28 @@
             </article>
         </section>
         <section id="imagenes-mostradas">
-            <select id="filtros">
-                <option id="optionTodas">Todas</option>
-                <option value="landscape" id="optionHoritontal">Horizontal</option>
-                <option value="portrait" id="optionVertical">Vertical</option>
-            </select>
+            <div class="select-container mb50">
+                <select id="filtros" class="selecto">
+                    <option id="optionTodas">Todas</option>
+                    <option value="landscape" id="optionHoritontal">Horizontal</option>
+                    <option value="portrait" id="optionVertical">Vertical</option>
+                </select>
+            </div>
+
             <article id="imagenes-filtradas-mostradas" class="flexContainer"> 
                 <!-- <h2>SEGUNDO TITULO</h2> -->
-               <!-- <div class="col-4">
+               <!-- <article class="col-4">
                   <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
                   <p>Nombre de la foto</p>
                   <p>Nombre del fotógrafo</p>
                   <p>Breve descripción</p>  
-                </div>
-                <div class="col-4">
+                </article>
+                <article class="col-4">
                   <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
                   <p>Nombre de la foto</p>
                   <p>Nombre del fotógrafo</p>
                   <p>Breve descripción</p>  
-                </div>
+                </article>
                 <div class="col-4">
                   <img src="assets/img/imagen-prueba.jpg" alt="Logotipo pexels">
                   <p>Nombre de la foto</p>

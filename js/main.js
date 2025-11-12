@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const botonFiltro = document.querySelector("#filtros");    
     const botonCards = document.querySelector("#categorias");
     const articleGaleriaIndex = document.querySelector("#imagenes-filtradas-mostradas");
-    //console.log(articleGaleriaIndex)
     const sectionGaleriaIndex = document.querySelector("#imagenes-mostradas");
     const campoInput = document.querySelector("#campo-buscador");
     const formulario = document.querySelector("#formulario");
@@ -27,42 +26,30 @@ document.addEventListener('DOMContentLoaded', () => {
             categoria:"Arte"
         }
     ];
-    const arrayFiltros = ["Todos", "Horizontal", "Vertical"];
 
     // ----------------- EVENTOS ---------------------------
-    //vamos a tener que delegar el evento click porque lo vamos a usar en distintos 
-    document.addEventListener("click", (ev) => {
 
-        //gestionCategorias(url); // ??????????????
+    document.addEventListener("click", (ev) => {
         
         if (ev.target.matches("#categorias button")) {
 
-            const tagbtn = ev.target.id; // obtiene el id del botón (categoría)
-            //console.log(tagbtn);
+            const tagbtn = ev.target.id; 
             gestionarData(tagbtn)
         }
-       
     });
 
     botonFiltro.addEventListener("change", (ev) => {
         if (ev.target.matches("#filtros")) {
-            const tagbtn = ev.target.value; // obtiene el elemento select
+            const tagbtn = ev.target.value; 
             console.log(tagbtn);
-            pintarImagenesIndex(tagbtn); // pinta las imágenes según el filtro seleccionado
+            pintarImagenesIndex(tagbtn); 
         }
-
     });
 
     formulario.addEventListener('submit', (ev) => {
-        //console.log(ev);
         ev.preventDefault();
 
-        //console.log("DESDE EVENTO SUBMIT")
-
-        //Para poder acceder al valor del input (palabra clave a meter en el buscador)
         const input = campoInput.value;
-        //console.log(input);
-
         validarPalabraInput(input);
     });
 
@@ -72,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         arrayBotones.forEach((foto)=>{
             pintarBotones(foto)
         })
-    }
+    };
 
     const conectarConApi = async (url) => {
         try {
@@ -81,102 +68,51 @@ document.addEventListener('DOMContentLoaded', () => {
                     Authorization:`${apiKey}`
                 }
             });
-            //console.log(respuesta)
+
             if (respuesta.ok) {
                 const datos = await respuesta.json();
-                //console.log(datos);
                 return datos;
             } else {
                 throw "Oh, oh, error"
             }
         } catch (error) {
-            //console.log(error)
             throw (error + "Pendiente de gestionar error")
         }
-    }
+    };
 
-//34665728
-//photos/34665728
-    // const gestionCategorias = async (id) => {
-    //     try {
-    //         const data = await conectarConApi(`photos/${id}`);
-    //         console.log(data);
-    //         pintarBotones(data);
-    //     } catch (error) {
-    //         mostrarError(error);
-    //     }
-    // }
-    
     const gestionarData = async (categoria)=>{
-        //console.log('pintando todas')
-        //console.log(categoria)
         const data = await conectarConApi(`search?query=${categoria}&orientation=${botonFiltro.value}&per_page=10&page=3`)
-        //console.log(data.photos, "AQUIIIIIIII")
         pintarImagenesIndex(data.photos);
-        //pintarFiltro();
-        
     };
 
     const pintarBotones = async({id,categoria}) => {
         try {
             const data = await conectarConApi(`photos/${id}`)
-            //console.log(data, "soy data")
             
             //fragmento???
             const miarticle = document.createElement("ARTICLE");
+            miarticle.classList.add('col-12', 'col-md-6','col-lg-4', 'p10', 'card');
 
             const divImg = document.createElement("DIV");
-
             const imagen = document.createElement("IMG");
-            imagen.setAttribute("src", data["src"]["medium"])
-            //console.log(imagen, "SRC ESTAMOS AQUI")
+            imagen.setAttribute("src", data["src"]["portrait"])
             imagen.setAttribute("alt", data.alt)
-            //console.log(imagen, "AALT")
 
             const miBoton = document.createElement("BUTTON");
             miBoton.id = categoria;
             miBoton.textContent = categoria;
-            //console.log(miBoton,"AQUI ESTOY")
             
             divImg.append(imagen,miBoton)
-            //console.log(divImg,"AHORA AQUI")
             miarticle.append(divImg)
-            //console.log(miarticle, "final")
             botonCards.append(miarticle);
-            //console.log(botonCards, "final2")
             
         } catch (error) {
             console.log(error)
         }
     };
 
-    // const pintarFiltro = async (categoria) => {
-
-    //     botonFiltro.innerHTML = ""
-    //     try {
-    //         const data = await conectarConApi(`search?query=${categoria}&per_page=10&orientation=${select.value}&page=3`)
-    //         //console.log(data)
-    //         const miSelect = document.createElement("SELECT");
-    //         //console.log(miSelect)
-    //         const miFiltro = document.createElement("OPTION");
-    //         console.log(miFiltro)
-    //         miFiltro.setAttribute("value", data["src"]["landscape"])
-    //        // miFiltro.value = data.src.landscape;
-    //         console.log(miFiltro)
-    //         miFiltro.textContent = "Landscape";
-    //         //console.log(miFiltro)
-    //         miSelect.append(miFiltro);
-
-    //         botonFiltro.append(miSelect);
-
-    //     } catch (error) {
-    //         console.log(error, "ERROR DESDE PINTAR FILTRO")
-            
-    //     }
-    // };
-
     const validarPalabraInput = (input) => {
-        //console.log("Validar Palabra Input");
+
         console.log(input, "DESDE VALIDAR PALABRA INPUT");
 
         /* Permite:
@@ -196,68 +132,45 @@ document.addEventListener('DOMContentLoaded', () => {
         let valido = true;
 
         if (input === "" || validarExpresion === false) {
-            //mostrarError();
             console.log("ENTRARÍA A ERROR")
-            valido = false; // Para que no se ejecute
+            valido = false; 
         } else if (validarExpresion === true) {
             gestionarData(input)
-            //pintarFiltro()
-            
-            //console.log("ENTRARÍA A FILTRAR IMÁGENES")
-        }
-        
-        
+        } 
     };
-
-    // const filtrarImagenesIndex = (arrayTemporalEjemplo, categoria) => {
-    // //console.log("filtrar Imagenes en index");
-    //     const imagenesFiltradas = arrayTemporalEjemplo.filter((fotos) => fotos.categoria === categoria); // Filter siempre te devuelve un array
-    //     if(imagenesFiltradas.length > 0) { // Comparar si el array devuelto tiene contenido o no
-    //         //console.log(imagenesFiltradas)
-    //         pintarImagenesIndex(imagenesFiltradas)
-    //     } else {
-    //         mostrarError();
-    //     }  
-    // }
 
     const pintarImagenesIndex = (imagenesFiltradas) => {
         console.log(imagenesFiltradas, "pintar Imagenes en index");
 
         articleGaleriaIndex.innerHTML = "";
         try {
+            const divH2 = document.createElement('DIV')
+            divH2.classList.add('col-12','mb50');
             const tituloSectionAPintar = document.createElement("H2");
-            //console.log(tituloSectionAPintar);
             tituloSectionAPintar.textContent = `Imágenes gratis relacionadas `
-            //console.log(tituloSectionAPintar);
-            // Meter H2 en section
             articleGaleriaIndex.prepend(tituloSectionAPintar);
 
-            imagenesFiltradas.forEach(fotos => { // Porque el método filter siempre te va a devolver un array
-            // Crear los elementos
+            imagenesFiltradas.forEach(fotos => { 
+
             const divImgAPintar = document.createElement('DIV');
-            //console.log(divImgAPintar)
+            divImgAPintar.classList.add('col-12', 'col-md-6','col-lg-4', 'p10', 'card');
+
             const imgAPintar = document.createElement('IMG');
-            //console.log(imgAPintar);
+
             const autorImgAPintar = document.createElement('P');
-            //console.log(autorImgAPintar);
 
-            // Asignar atributos a img, p y h2
             imgAPintar.setAttribute("src", fotos["src"]["medium"]);
-            //console.log(imgAPintar);
+
             imgAPintar.setAttribute("alt", fotos.alt);
-            //console.log(imgAPintar);
+
             autorImgAPintar.textContent = fotos.photographer;
-            //console.log(autorImgAPintar)
 
-            // Meter img y ps en el div
+            divH2.append(tituloSectionAPintar);
+
             divImgAPintar.append(imgAPintar, autorImgAPintar);
-            //console.log(divImgAPintar);
 
-            // Meter el div en el article
-            articleGaleriaIndex.append(divImgAPintar); 
-            //console.log(articleGaleriaIndex);
+            articleGaleriaIndex.append(divH2,divImgAPintar); 
             
-            //Fragmento
             fragment.append(divImgAPintar);
         });
 
@@ -267,20 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(error, "GESTIONA EL ERROR DESDE PINTARIMAGENESINDEX")
         }
 
-    }
+    };
 
-    /*const mostrarError = () => {
-        // Crear elemento
+    const mostrarError = () => {
         const textoError = document.createElement('P');
-        //console.log(textoError);
 
-        // Asignar texto
         textoError.textContent = "Tu búsqueda no se corresponde con ninguna imágen. Prueba otra vez";
-        //console.log(textoError);
-
         articleGaleriaIndex.append(textoError); 
-        //console.log(articleGaleriaIndex);
-    };*/
+    };
 
     //-------------- INVOCACIONES ----------------------
 
