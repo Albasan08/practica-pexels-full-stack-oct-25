@@ -14,14 +14,15 @@
             </a>
         </div>
         <div class="col-6  col-lg-6 fav alvert">
-            <button>Favoritos</button> <!-- Investigar como hacer un pop up-->
+            <a href="fav.html"><button id="boton-favoritos-header">Favoritos</button></a>
         </div>
     </header>
     <main>
         <header class="mb50">
-            <h1>Las mejores fotos de stock gratis, imágenes libres de regalías y vídeos compartidos por creadores.</h1>
+            <div class="w80-lg">
+                <h1>Las mejores fotos de stock gratis, imágenes libres de regalías y vídeos compartidos por creadores.</h1>
+            </div>
         </header>
-        
         <section class="mb100">
             <article id="buscador" class="mb20">
                 <form action="#" id="formulario" class="formulario flexContainer">
@@ -52,7 +53,6 @@
                     <option value="portrait" id="optionVertical">Vertical</option>
                 </select>
             </div>
-
             <article id="imagenes-filtradas-mostradas" class="flexContainer"> 
                 <!-- <h2>SEGUNDO TITULO</h2> -->
                <!-- <article class="col-4">
@@ -75,6 +75,25 @@
                 </div>-->
             </article>
         </section>
+        <!-- <section class="popup flexContainer" id="popup-favoritos">
+            <h2>TUS FAVORITOS</h2>
+            <article class="">
+                <div class="col-lg-4">
+                    <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg" alt="#">
+                    <p>Nombre de la foto</p>
+                    <button>Eliminar favorito</button>
+                </div>
+
+                <div class="col-lg-4">
+                    <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg" alt="#">
+                    <p>Nombre de la foto</p>
+                    <button>Eliminar favorito</button>
+                </div>
+            </article>
+            <button id="cerrar-popup">Cerrar</button> 
+
+
+        </section> -->
     </main>
     <footer>
         <p>Práctica front</p>

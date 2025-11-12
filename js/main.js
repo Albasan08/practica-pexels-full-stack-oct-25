@@ -8,12 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const campoInput = document.querySelector("#campo-buscador");
     const formulario = document.querySelector("#formulario");
     const articleError = document.querySelector("#error");
+    // const abrirPopup = document.querySelector("#boton-favoritos-header");
+    // const popup = document.querySelector("#popup-favoritos");
+    // const cerrarPopup = document.querySelector("#cerrar-popup");
     const fragment = document.createDocumentFragment();
     
     // ----------------- VARIABLES -------------------------
     const urlBase ='https://api.pexels.com/v1'
     const apiKey = "5ih5q7iDnDqQWYj19e4LGs6e4GjQMKBxIt3EojUp2ZU4c9ZlmM5i27SH";
     let categoriaActual;
+    let favoritos = [];
 
     const arrayBotones = [{
             id:34665728,
@@ -40,6 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // const tagbtn = ev.target.id; 
             // gestionarData(tagbtn);
         }
+
+        if(ev.target.matches(".btnfavIMG")) {
+            console.log(ev.target.id, "BOTON FAV")
+            let id = ev.target.id;
+            agregarFavoritos(id);
+        }
     });
 
     botonFiltro.addEventListener("change", (ev) => {
@@ -61,6 +71,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // const input = campoInput.value;
         // validarPalabraInput(input);
     });
+
+
+    // abrirPopup.addEventListener("click", () => {
+    //     popup.classList.add("ensenar");
+    // });
+    
+    // cerrarPopup.addEventListener("click", () => {
+    //     popup.classList.remove("ensenar");
+    // });
 
 
     // --------------- FUNCIONES --------------------------
@@ -160,15 +179,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const tituloSectionAPintar = document.createElement("H2");
             tituloSectionAPintar.textContent = `Imágenes gratis relacionadas `
             articleGaleriaIndex.prepend(tituloSectionAPintar);
-
+            console.log(imagenesFiltradas, "AQUI ESTAMOOOOS")
             imagenesFiltradas.forEach(fotos => { 
 
                 const divImgAPintar = document.createElement('DIV');
-                divImgAPintar.classList.add('col-12', 'col-md-6','col-lg-4', 'p10', 'card');
+                divImgAPintar.classList.add('col-12', 'col-md-6','col-lg-4', 'p10', 'card1');
 
                 const imgAPintar = document.createElement('IMG');
 
                 const autorImgAPintar = document.createElement('P');
+
+                const botonFavorito = document.createElement('BUTTON');
 
                 imgAPintar.setAttribute("src", fotos["src"]["medium"]);
 
@@ -176,9 +197,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 autorImgAPintar.textContent = fotos.photographer;
 
+                botonFavorito.textContent = "❤️​";
+  
+                botonFavorito.id = fotos.id;
+
+                botonFavorito.classList.add("btnfavIMG");
+
                 divH2.append(tituloSectionAPintar);
 
-                divImgAPintar.append(imgAPintar, autorImgAPintar);
+                divImgAPintar.append(imgAPintar, autorImgAPintar, botonFavorito);
 
                 articleGaleriaIndex.append(divH2,divImgAPintar); 
                 
@@ -205,9 +232,82 @@ document.addEventListener('DOMContentLoaded', () => {
         articleError.append(divError);
     };
 
+    const obtenerFavoritos = () => {
+       return JSON.parse(localStorage.getItem("favoritos")) || [];
+    }
+
+    const guardarFavoritos = (favoritos) => {
+        localStorage.setItem("favoritos", JSON.stringify(favoritos));
+
+    }
+
+    const obtenerInfoFav = async (id) => {
+
+        try {
+            const data = await conectarConApi(`photos/${id}`)
+            //console.log(data);
+
+            const newfav = {
+
+                id: data.id,
+                srcP: data.src.small,
+                srcG: data.src.medium,
+                alt: data.alt,
+                fotografo: data.photographer
+            }
+            return newfav;
+
+        } catch (error) {
+            mostrarError();
+        }
+        
+    }
+
+    const agregarFavoritos = async (id) => {
+        console.log("entra en agregar")
+
+        try { 
+
+            const favorito = await obtenerInfoFav(id);
+
+            const arrayFavoritosLocal = obtenerFavoritos();
+            console.log(arrayFavoritosLocal)
+
+            const existeFavorito = arrayFavoritosLocal.find(objetoFoto => objetoFoto.id === favorito.id)
+            console.log(existeFavorito)
+
+
+ 
+
+
+
+        } catch (error) {
+            mostrarError()
+        }
+        //console.log(favoritos, "AGREGAVAFORITOS AQUI")
+
+    }
+    
+
+    const eliminarFavoritos = () => {
+        favoritos = obtenerFavoritos();
+
+
+
+        guardarFavoritos(favoritos); 
+
+        pintarFavoritos();
+    }
+
+    const pintarFavoritos = () => {
+        console.log("ESTA ENTRANDO EN PINTAR")
+    }
+
     //-------------- INVOCACIONES ----------------------
 
     init()
+
+
 
   
 });//DOMContentLoaded
